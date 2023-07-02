@@ -23,8 +23,8 @@ app.get("/", (req, res) => {
 app.post("/createUser", (req, res) => {
     const data = req.body; //pegando dados da requisição
     const valid = clientValidation(data); //validando os dados
-    if (!valid) return res.status(500).send({ "message:": "Dados inválidos!" }); //se os dados forem inválidos, retorna uma mensagem de erro
-    const cliente = { ...data, id: generateUniqueId()}
+    if (!valid.status) return res.status(500).send({ "message:": "Dados inválidos!" }); //se os dados forem inválidos, retorna uma mensagem de erro
+    const cliente = { ...valid.data, id: generateUniqueId()}
     console.log(cliente);
     Cliente.create(cliente)
         .then((clienteCriado) => {
