@@ -1,7 +1,8 @@
-require('dotenv').config()
+require("dotenv").config();
 const express = require("express");
 const Cliente = require("./src/models/cliente");
 const clientValidation = require("./src/middleware/validators");
+const {generateUniqueId} = require("./src/middleware/helpers");
 const app = express();
 const port = process.env.PORT || 3000;
 const bd = require("./db/conn");
@@ -23,20 +24,17 @@ app.post("/createUser", (req, res) => {
     const data = req.body; //pegando dados da requisição
     const valid = clientValidation(data); //validando os dados
     if (!valid) return res.status(500).send({ "message:": "Dados inválidos!" }); //se os dados forem inválidos, retorna uma mensagem de erro
-    const cliente = new Cliente(
-        data.id,
-        data.name,
-        data.mail,
-        data.cpf,
-        data.dateBirth,
-        data.address,
-        data.phone,
-        data.regDate,
-        data.attDate,
-        data.acvite
-    ); //criando um novo cliente
+    const cliente = { ...data, id: generateUniqueId()}
+    console.log(cliente);
+    Cliente.create(cliente)
+        .then((clienteCriado) => {
+            return res.status(201).send(clienteCriado);
+        })
+        .catch((erro) => {
+            console.error("Erro ao criar cliente:", erro);
+            return res.status(500).send({ "message:": "Erro ao criar cliente!" });
+        });
 
-    return res.status(201).send({ "message:": "Cliente criado com sucesso!", cliente }); //se os dados forem válidos, retorna uma mensagem de sucesso
 });
 
 app.listen(port, () => {

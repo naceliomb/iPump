@@ -3,7 +3,6 @@ const clientValidation = (dataBody) => {
 
     // Verificar se todos os campos obrigatórios estão presentes
     if (
-        !id ||
         !name ||
         !mail ||
         !cpf ||
