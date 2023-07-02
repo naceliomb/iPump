@@ -9,8 +9,6 @@ const clientValidation = (dataBody) => {
         !dateBirth ||
         !address ||
         !phone ||
-        !regDate ||
-        !attDate ||
         acvite === undefined
     ) {
         return false;
