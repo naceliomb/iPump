@@ -1,27 +1,21 @@
 const moment = require("moment");
 
 const clientValidation = (dataBody) => {
-    const { name, mail, cpf, dateBirth, address, phone, acvite } = dataBody;
+    const { name, mail, cpf, dateBirth, address, phone, active } = dataBody;
 
     // Verificar se todos os campos obrigatórios estão presentes
-    if (!name || !mail || !cpf || !dateBirth || !address || !phone || acvite === undefined) {
+    if (!name || !address) {
         return { status: false };
     }
     const data = {
         name: cleanName(name),
-        mail: cleanEmail(mail),
-        cpf: cleanCPF(cpf),
-        dateBirth: cleanDateBirth(dateBirth),
+        ...(mail && { mail: cleanEmail(mail) }),
+        ...(cpf && { cpf: cleanCPF(cpf) }),
+        ...(dateBirth && { dateBirth: cleanDateBirth(dateBirth) }),
         address: cleanAddress(address),
-        phone: cleanPhone(phone),
-        acvite: acvite
+        ...(phone && { phone: cleanPhone(phone) }),
+        active: active ? active : true,
     };
-
-    if (data.mail === null) return { status: false };
-    if (data.cpf === null) return { status: false };
-    if (data.dateBirth === null) return { status: false };
-    if (data.phone === null) return { status: false };
-    if (acvite === undefined) return { status: false };
 
     // Retornar true se todos os campos passarem pelas validações
     return { status: true, data };

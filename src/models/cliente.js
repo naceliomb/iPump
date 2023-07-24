@@ -33,6 +33,7 @@ const Cliente = sequelize.define('Cliente', {
   phone: {
     type: DataTypes.STRING,
     allowNull: true,
+    defaultValue: null,
   },
   regDate: {
     type: DataTypes.DATE,
@@ -53,6 +54,7 @@ const Cliente = sequelize.define('Cliente', {
 }, {
   tableName: 'clientes', // nome da tabela no banco de dados
   timestamps: true, // habilita as colunas createdAt e updatedAt
+  omitNull: true
 });
 
 module.exports = Cliente;
